@@ -3,7 +3,7 @@
 The components for this currently run independently of the validator and miner scripts. For validators there is [`compose-validator.yml`](../compose-validator.yml) and for miners there is [`compose-miner.yml`](../compose-miner.yml).
 
 > [!NOTE]
-> The `netuid` is the ID of the subnet you want to validate for. You can find the `netuid` of the mainnet or testnet you want to validate for in the `netuids` array [here](https://github.com/opentensor/subnet-launcher/blob/main/networks.py#L23).
+> This guide is meant to be subnet-agnostic. Participating subnets that use _Lucid_ will likely have their own setup instructions and environment variables. Consult a subnet's documentation and/or discord channel for more specific setup details.
 
 ## Both Validators and Miners
 
