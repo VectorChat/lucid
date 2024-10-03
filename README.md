@@ -1,6 +1,11 @@
-# Lucid
+<!-- centered -->
+<!-- <div align="center"> -->
+
+![Lucid hero image](./assets/hero.png)
 
 _Lucid_ aims to be a relatively simple, generic solution to address the problem of relay mining on the Bittensor network.
+
+<!-- </div> -->
 
 ## Overview
 
