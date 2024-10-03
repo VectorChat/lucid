@@ -1,6 +1,9 @@
 # Setup
 
-The components for this relay mining update currently run independently of the validator and miner scripts. For validators there is [`compose-validator.yml`](../compose-validator.yml) and for miners there is [`compose-miner.yml`](../compose-miner.yml).
+The components for this currently run independently of the validator and miner scripts. For validators there is [`compose-validator.yml`](../compose-validator.yml) and for miners there is [`compose-miner.yml`](../compose-miner.yml).
+
+> [!NOTE]
+> The `netuid` is the ID of the subnet you want to validate for. You can find the `netuid` of the mainnet or testnet you want to validate for in the `netuids` array [here](https://github.com/opentensor/subnet-launcher/blob/main/networks.py#L23).
 
 ## Both Validators and Miners
 
@@ -8,7 +11,7 @@ First, make sure you have Docker installed and setup.
 
 If you are on Windows, please follow [the official docs](https://docs.docker.com/desktop/install/windows-install/).
 
-For Mac, please follow [these docs](https://docs.docker.com/desktop/install/mac-install/). 
+For Mac, please follow [these docs](https://docs.docker.com/desktop/install/mac-install/).
 
 For Linux, depending on your distro, you can follow either the [official docs](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) or [these docs](https://docs.sevenbridges.com/docs/install-docker-on-linux)
 
@@ -23,11 +26,11 @@ CLUSTER_SECRET=""
 LEADER_IPFS_MULTIADDR=""
 LEADER_IPFS_CLUSTER_MULTIADDR=""
 LEADER_IPFS_CLUSTER_ID=""
-LISTENER_ARGS="--netuid 40 --min-stake 1000"
+LISTENER_ARGS="--netuid NETUID --min-stake 1000"
 BT_DIR="/root/.bittensor"
 
 # validator-only
-INSCRIBER_ARGS="--netuid 40 --bittensor-coldkey-name YOUR_COLDKEY --bittensor-hotkey-name YOUR_HOTKEY"
+INSCRIBER_ARGS="--netuid NETUID --bittensor-coldkey-name YOUR_COLDKEY --bittensor-hotkey-name YOUR_HOTKEY"
 ...
 ```
 
@@ -41,11 +44,11 @@ SWARM_SECRET=""
 LEADER_IPFS_MULTIADDR=""
 LEADER_IPFS_CLUSTER_MULTIADDR=""
 LEADER_IPFS_CLUSTER_ID=""
-LISTENER_ARGS="--netuid 166 --min-stake 1000 --ws-url wss://test.finney.opentensor.ai:443/"
+LISTENER_ARGS="--netuid TEST_NETUID --min-stake 1000 --ws-url wss://test.finney.opentensor.ai:443/"
 BT_DIR="/root/.bittensor"
 
 # validator-only
-INSCRIBER_ARGS="--netuid 166 --bittensor-coldkey-name YOUR_COLDKEY --bittensor-hotkey-name YOUR_HOTKEY --ws-url wss://test.finney.opentensor.ai:443/"
+INSCRIBER_ARGS="--netuid TEST_NETUID --bittensor-coldkey-name YOUR_COLDKEY --bittensor-hotkey-name YOUR_HOTKEY --ws-url wss://test.finney.opentensor.ai:443/"
 ...
 ```
 
