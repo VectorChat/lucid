@@ -36,7 +36,7 @@ Similarly, a miner operator runs a few extra services, specified via [a docker c
 
 ## Diagram
 
-![Relay Mining Architecture](../../assets/arch.png)
+![Relay Mining Architecture](../assets/arch.png)
 
 ### Example Flow
 
