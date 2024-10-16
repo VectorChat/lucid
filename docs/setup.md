@@ -17,12 +17,15 @@ For Linux, depending on your distro, you can follow either the [official docs](h
 
 You can also try typing `docker` into your terminal and it may recommend a package manager to install docker.
 
+### Mainnet
+
 For mainnet, make sure the following is in your `.env` file:
 
 ```txt
 ...
 # common
 CLUSTER_SECRET=""
+SWARM_SECRET=""
 LEADER_IPFS_MULTIADDR=""
 LEADER_IPFS_CLUSTER_MULTIADDR=""
 LEADER_IPFS_CLUSTER_ID=""
@@ -33,6 +36,8 @@ BT_DIR="/root/.bittensor"
 INSCRIBER_ARGS="--netuid NETUID --bittensor-coldkey-name YOUR_COLDKEY --bittensor-hotkey-name YOUR_HOTKEY"
 ...
 ```
+
+### Testnet
 
 For testnet, use a separate env file, something like `.env.testnet`.
 
@@ -90,9 +95,9 @@ sudo ufw allow 9096/tcp
 
 # Enable the firewall if it's not already active
 sudo ufw enable
-
-Everything else can be walled off as normal (other than your axon port(s))
 ```
+
+Everything else can be walled off as normal (other than your axon port(s) of course)
 
 ## Validator
 
@@ -129,6 +134,38 @@ To stop, use:
 
 ```bash
 docker compose -f compose-miner.yml down
+```
+
+## Validate Setup
+
+See if you can query the IPFS REST API locally using:
+
+```bash
+curl http://127.0.0.1:5001/api/v0/version
+```
+
+You should see something like:
+
+```json
+{
+  "Version": "0.31.0-dev",
+  "Commit": "a178307",
+  "Repo": "16",
+  "System": "amd64/linux",
+  "Golang": "go1.22.7"
+}
+```
+
+See if you can query the IPFS Cluster REST API locally using:
+
+```bash
+curl http://127.0.0.1:9096/api/v0/version
+```
+
+You should see something like:
+
+```json
+{ "version": "1.1.1+gita5dab45c1e241167aaf0adc8a9a0740108a755e0" }
 ```
 
 ## Useful Docker Commands
