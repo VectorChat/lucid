@@ -79,6 +79,42 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  mainnet-lite:
+    image: ghcr.io/opentensor/subtensor:latest
+    build:
+      context: ${SUBTENSOR_PATH:-../subtensor} 
+      dockerfile: Dockerfile
+      target: subtensor
+    cpu_count: 4
+    mem_limit: 8G
+    memswap_limit: 12G
+    ports:
+      - "127.0.0.1:9944:9944"
+      - "30333:30333"
+      # - "9933:9933"
+    networks:
+      - ipfs-network
+    environment:
+      - CARGO_HOME=/var/www/node-subtensor/.cargo
+    container_name: subtensor-mainnet-lite
+    volumes:
+      - mainnet-lite-volume:/tmp/blockchain
+    command:
+      - /bin/bash
+      - -c
+      - |
+        node-subtensor \
+          --base-path /tmp/blockchain \
+          --chain raw_spec_finney.json \
+          --rpc-external --rpc-cors all \
+          --no-mdns \
+          --in-peers 500 --out-peers 500 \
+          --bootnodes /dns/bootnode.finney.chain.opentensor.ai/tcp/30333/ws/p2p/12D3KooWRwbMb85RWnT8DSXSYMWQtuDwh4LJzndoRrTDotTR5gDC \
+          --sync warp
+    profiles:
+      - mainnet-lite
+    restart: unless-stopped
 
 networks:
   ipfs-network:

@@ -24,16 +24,17 @@ For mainnet, make sure the following is in your `.env` file:
 ```txt
 ...
 # common
-CLUSTER_SECRET=""
-SWARM_SECRET=""
-LEADER_IPFS_MULTIADDR=""
-LEADER_IPFS_CLUSTER_MULTIADDR=""
-LEADER_IPFS_CLUSTER_ID=""
-LISTENER_ARGS="--netuid NETUID --min-stake 1000"
+CLUSTER_SECRET="4e9e8c3de87dd495dc9ce6304ee7006a8228f64bad53f0870576adb06207de55"
+SWARM_SECRET="261cacbfcf697faa54a7196b824e461adab7c188236ac79ee836e5b7c87f7d9a"
+LEADER_IPFS_MULTIADDR="/ip4/137.184.138.42/tcp/4001/p2p/12D3KooWPbLoA76oDwYwmuiXW6JFd7Bvbh4gvDfKzNjMWesB1JqV"
+LEADER_IPFS_CLUSTER_MULTIADDR="/ip4/137.184.138.42/tcp/9096/p2p/12D3KooWKDk3TGgkKodAjo6ydRZjtD6TeZT1dvqvb6Bm2h8RHRMU"
+LEADER_IPFS_CLUSTER_ID="12D3KooWKDk3TGgkKodAjo6ydRZjtD6TeZT1dvqvb6Bm2h8RHRMU"
+IS_LEADER="true"
+LISTENER_ARGS="--netuid <NETUID> --min-stake 10000 --ws-url ws://subtensor-mainnet-lite:9944 --log-level info"
 BT_DIR="/root/.bittensor"
 
 # validator-only
-INSCRIBER_ARGS="--netuid NETUID --bittensor-coldkey-name YOUR_COLDKEY --bittensor-hotkey-name YOUR_HOTKEY"
+INSCRIBER_ARGS="--netuid <NETUID> --bittensor-coldkey-name <YOUR_COLDKEY> --bittensor-hotkey-name <YOUR_HOTKEY> --ws-url ws://subtensor-mainnet-lite:9944 --log-level info"
 ...
 ```
 
@@ -49,11 +50,11 @@ SWARM_SECRET=""
 LEADER_IPFS_MULTIADDR=""
 LEADER_IPFS_CLUSTER_MULTIADDR=""
 LEADER_IPFS_CLUSTER_ID=""
-LISTENER_ARGS="--netuid TEST_NETUID --min-stake 1000 --ws-url wss://test.finney.opentensor.ai:443/"
+LISTENER_ARGS="--netuid <TEST_NETUID> --min-stake 1000 --ws-url wss://test.finney.opentensor.ai:443/"
 BT_DIR="/root/.bittensor"
 
 # validator-only
-INSCRIBER_ARGS="--netuid TEST_NETUID --bittensor-coldkey-name YOUR_COLDKEY --bittensor-hotkey-name YOUR_HOTKEY --ws-url wss://test.finney.opentensor.ai:443/"
+INSCRIBER_ARGS="--netuid <TEST_NETUID> --bittensor-coldkey-name <YOUR_COLDKEY> --bittensor-hotkey-name <YOUR_HOTKEY> --ws-url wss://test.finney.opentensor.ai:443/"
 ...
 ```
 
@@ -65,24 +66,25 @@ docker compose -f compose-validator.yml --env-file .env.testnet up --build -d
 
 Description of environment variables:
 
-| Variable                        | Description                                                                                                     |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| CLUSTER_SECRET                  | The secret used to encrypt the IPFS Cluster.                                                                    |
-| IPFS_SWARM_KEY                  | The key used to encrypt the IPFS Swarm.                                                                         |
-| LEADER_IPFS_MULTIADDR           | The multiaddress of the IPFS leader.                                                                            |
-| LEADER_IPFS_CLUSTER_MULTIADDR   | The multiaddress of the IPFS Cluster leader.                                                                    |
-| LEADER_IPFS_CLUSTER_ID          | The ID of the IPFS Cluster leader.                                                                              |
-| LISTENER_ARGS                   | The arguments passed to the listener service.                                                                   |
-| INSCRIBER_ARGS (validator-only) | The arguments passed to the inscriber service. Make sure to fill out your correct bittensor coldkey and hotkey. |
+| Variable                        | Description                                                                                                                                                                                                                                                                                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CLUSTER_SECRET                  | The secret used to encrypt the IPFS Cluster.                                                                                                                                                                                                                                                |
+| IPFS_SWARM_KEY                  | The key used to encrypt the IPFS Swarm.                                                                                                                                                                                                                                                     |
+| LEADER_IPFS_MULTIADDR           | The multiaddress of the IPFS leader.                                                                                                                                                                                                                                                        |
+| LEADER_IPFS_CLUSTER_MULTIADDR   | The multiaddress of the IPFS Cluster leader.                                                                                                                                                                                                                                                |
+| LEADER_IPFS_CLUSTER_ID          | The ID of the IPFS Cluster leader.                                                                                                                                                                                                                                                          |
+| LISTENER_ARGS                   | The arguments passed to the listener service. Make sure to replace `<NETUID>` with the correct netuid and change the `--ws-url` endpoint if needed. Running with `--log-level verbose` will show additional logs/information.                                                               |
+| INSCRIBER_ARGS (validator-only) | The arguments passed to the inscriber service. Make sure to replace `<YOUR_COLDKEY>` with your bittensor wallet name and `<YOUR_HOTKEY>` with your bittensor hotkey name. Also make sure to set the correct `<NETUID>` in the `--netuid` flag and update the `--ws-url` endpoint if needed. |
 
 ### Firewall Setup
 
 Make sure to expose the swarm ports for both IPFS and IPFS Cluster.
 
-| Service      | Port |
-| ------------ | ---- |
-| IPFS         | 4001 |
-| IPFS Cluster | 9096 |
+| Service                        | Port  |
+| ------------------------------ | ----- |
+| IPFS                           | 4001  |
+| IPFS Cluster                   | 9096  |
+| Lite node (if running locally) | 30333 |
 
 Here's a snippet to set that up if you use ufw:
 
@@ -92,6 +94,9 @@ sudo ufw allow 4001/tcp
 
 # Allow IPFS Cluster Swarm port
 sudo ufw allow 9096/tcp
+
+# Allow Lite node port (if running locally)
+sudo ufw allow 30333/tcp
 
 # Enable the firewall if it's not already active
 sudo ufw enable
@@ -107,10 +112,22 @@ To run, use the following command:
 docker compose -f compose-validator.yml up --build -d
 ```
 
+If you would like to run with a lite node (mainnet), you can run the following command:
+
+```bash
+docker compose -f compose-validator.yml --profile mainnet-lite up -d
+```
+
 To view logs, use:
 
 ```bash
 docker compose -f compose-validator.yml logs -f -n=250
+```
+
+To stop (adding `--profile mainnet-lite` if you are running with a lite node), use:
+
+```bash
+docker compose -f compose-validator.yml [--profile mainnet-lite] down
 ```
 
 ## Miner
@@ -124,16 +141,22 @@ To run, use the following command:
 docker compose -f compose-miner.yml up --build -d
 ```
 
+If you would like to run with a lite node (mainnet), you can run the following command:
+
+```bash
+docker compose -f compose-miner.yml --profile mainnet-lite up -d
+```
+
 To view logs, use:
 
 ```bash
 docker compose -f compose-miner.yml logs -f -n=250
 ```
 
-To stop, use:
+To stop (adding `--profile mainnet-lite` if you are running with a lite node), use:
 
 ```bash
-docker compose -f compose-miner.yml down
+docker compose -f compose-miner.yml [--profile mainnet-lite] down
 ```
 
 ## Validate Setup
