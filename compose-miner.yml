@@ -65,7 +65,7 @@ services:
   listener:
     container_name: miner-listener
     build:
-      context: ./relay/ts
+      context: ./ts
     command: sh -c "npx tsx src/listener.ts ${LISTENER_ARGS}"
     environment:
       LEADER_IPFS_CLUSTER_ID: ${LEADER_IPFS_CLUSTER_ID}

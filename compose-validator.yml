@@ -66,7 +66,7 @@ services:
   listener:
     container_name: val-listener
     build:
-      context: ./relay/ts
+      context: ./ts
     command: sh -c "npx tsx src/listener.ts ${LISTENER_ARGS}"
     environment:
       - LEADER_IPFS_CLUSTER_ID=${LEADER_IPFS_CLUSTER_ID}
@@ -79,7 +79,7 @@ services:
   inscriber:
     container_name: val-inscriber
     build:
-      context: ./relay/ts
+      context: ./ts
     command: sh -c "npx tsx src/inscriber.ts ${INSCRIBER_ARGS}"
     volumes:
       - ${BT_DIR}:/root/.bittensor
