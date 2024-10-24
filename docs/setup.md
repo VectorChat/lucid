@@ -17,51 +17,24 @@ For Linux, depending on your distro, you can follow either the [official docs](h
 
 You can also try typing `docker` into your terminal and it may recommend a package manager to install docker.
 
-### Mainnet
+### Environment Variables
 
-For mainnet, make sure the following is in your `.env` file:
+Both `.env.testnet` and `.env` files should have the same environment variables. The actual values should be provided by your subnet.
 
 ```txt
 ...
 # common
-CLUSTER_SECRET="4e9e8c3de87dd495dc9ce6304ee7006a8228f64bad53f0870576adb06207de55"
-SWARM_SECRET="261cacbfcf697faa54a7196b824e461adab7c188236ac79ee836e5b7c87f7d9a"
-LEADER_IPFS_MULTIADDR="/ip4/137.184.138.42/tcp/4001/p2p/12D3KooWPbLoA76oDwYwmuiXW6JFd7Bvbh4gvDfKzNjMWesB1JqV"
-LEADER_IPFS_CLUSTER_MULTIADDR="/ip4/137.184.138.42/tcp/9096/p2p/12D3KooWKDk3TGgkKodAjo6ydRZjtD6TeZT1dvqvb6Bm2h8RHRMU"
-LEADER_IPFS_CLUSTER_ID="12D3KooWKDk3TGgkKodAjo6ydRZjtD6TeZT1dvqvb6Bm2h8RHRMU"
-IS_LEADER="true"
-LISTENER_ARGS="--netuid <NETUID> --min-stake 10000 --ws-url ws://subtensor-mainnet-lite:9944 --log-level info"
-BT_DIR="/root/.bittensor"
-
-# validator-only
-INSCRIBER_ARGS="--netuid <NETUID> --bittensor-coldkey-name <YOUR_COLDKEY> --bittensor-hotkey-name <YOUR_HOTKEY> --ws-url ws://subtensor-mainnet-lite:9944 --log-level info"
-...
-```
-
-### Testnet
-
-For testnet, use a separate env file, something like `.env.testnet`.
-
-```txt
-...
-# testnet
 CLUSTER_SECRET=""
 SWARM_SECRET=""
 LEADER_IPFS_MULTIADDR=""
 LEADER_IPFS_CLUSTER_MULTIADDR=""
 LEADER_IPFS_CLUSTER_ID=""
-LISTENER_ARGS="--netuid <TEST_NETUID> --min-stake 1000 --ws-url wss://test.finney.opentensor.ai:443/"
-BT_DIR="/root/.bittensor"
+LISTENER_ARGS=""
+BT_DIR=""
 
 # validator-only
-INSCRIBER_ARGS="--netuid <TEST_NETUID> --bittensor-coldkey-name <YOUR_COLDKEY> --bittensor-hotkey-name <YOUR_HOTKEY> --ws-url wss://test.finney.opentensor.ai:443/"
+INSCRIBER_ARGS=""
 ...
-```
-
-This can then be specified when running the docker compose file, like so:
-
-```bash
-docker compose -f compose-validator.yml --env-file .env.testnet up --build -d
 ```
 
 Description of environment variables:
@@ -116,6 +89,12 @@ If you would like to run with a lite node (mainnet), you can run the following c
 
 ```bash
 docker compose -f compose-validator.yml --profile mainnet-lite up -d
+```
+
+To use a custom env file (e.g. `.env.testnet`), you can run the following command:
+
+```bash
+docker compose -f compose-validator.yml --env-file CUSTOM_ENV_FILE up --build -d
 ```
 
 To view logs, use:
