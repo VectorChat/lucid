@@ -143,7 +143,7 @@ docker compose -f compose-miner.yml [--profile mainnet-lite] down
 See if you can query the IPFS REST API locally using:
 
 ```bash
-curl http://127.0.0.1:5001/api/v0/version
+curl -X POST http://127.0.0.1:5001/api/v0/version
 ```
 
 You should see something like:
@@ -161,7 +161,7 @@ You should see something like:
 See if you can query the IPFS Cluster REST API locally using:
 
 ```bash
-curl http://127.0.0.1:9096/api/v0/version
+curl http://127.0.0.1:9094/version
 ```
 
 You should see something like:
